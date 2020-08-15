@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import AssetAllocation from './asset-allocation/AssetAllocation';
 import Header from './header/Header';
@@ -7,7 +7,7 @@ import Home from './home/Home';
 
 function App(): JSX.Element {
   return (
-    <Router>
+    <BrowserRouter>
       <div>
         <Header />
         <Switch>
@@ -19,7 +19,7 @@ function App(): JSX.Element {
           </Route>
         </Switch>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 
