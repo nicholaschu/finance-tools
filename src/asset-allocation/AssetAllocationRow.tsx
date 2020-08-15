@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import { AssetAllocationModel } from './asset-allocation.model';
+import { AssetAllocationResource } from './asset-allocation.resource';
 import './AssetAllocationRow.css';
 
 export enum ColumnType {
@@ -20,10 +20,10 @@ function AssetAllocationRow({
   onChange,
   onRemoveRowClicked,
 }: {
-  assetAllocation: AssetAllocationModel;
+  assetAllocation: AssetAllocationResource;
   index: number;
   onChange: (
-    updatedAssetAllocation: AssetAllocationModel,
+    updatedAssetAllocation: AssetAllocationResource,
     index: number
   ) => void;
   onRemoveRowClicked: (index: number) => void;
@@ -32,8 +32,9 @@ function AssetAllocationRow({
     <tr>
       <td>
         <input
+          type="text"
           defaultValue={assetAllocation.symbol}
-          onChange={(event: React.ChangeEvent) =>
+          onBlur={(event: React.ChangeEvent<HTMLInputElement>) =>
             handleModifyInput(
               event,
               ColumnType.SYMBOL,
@@ -46,8 +47,9 @@ function AssetAllocationRow({
       </td>
       <td>
         <input
+          type="number"
           defaultValue={assetAllocation.shares}
-          onChange={(event: React.ChangeEvent) =>
+          onBlur={(event: React.ChangeEvent<HTMLInputElement>) =>
             handleModifyInput(
               event,
               ColumnType.SHARES,
@@ -63,11 +65,12 @@ function AssetAllocationRow({
       <td>{assetAllocation.currentWeight}</td>
       <td>
         <input
+          type="number"
           defaultValue={assetAllocation.targetWeight}
-          onChange={(event: React.ChangeEvent) =>
+          onBlur={(event: React.ChangeEvent<HTMLInputElement>) =>
             handleModifyInput(
               event,
-              ColumnType.CURRENT_WEIGHT,
+              ColumnType.TARGET_WEIGHT,
               assetAllocation,
               index,
               onChange
@@ -87,16 +90,16 @@ function AssetAllocationRow({
 }
 
 function handleModifyInput(
-  event: any,
+  event: React.ChangeEvent<HTMLInputElement>,
   columnType: ColumnType,
-  originalAssetAllocation: AssetAllocationModel,
+  originalAssetAllocation: AssetAllocationResource,
   index: number,
   onChange: (
-    updatedAssetAllocation: AssetAllocationModel,
+    updatedAssetAllocation: AssetAllocationResource,
     index: number
   ) => void
 ): void {
-  const updatedAssetAllocation: AssetAllocationModel = updateAssetAllocation(
+  const updatedAssetAllocation: AssetAllocationResource = updateAssetAllocation(
     event,
     columnType,
     originalAssetAllocation
@@ -106,17 +109,20 @@ function handleModifyInput(
 }
 
 function updateAssetAllocation(
-  event: any,
+  event: React.ChangeEvent<HTMLInputElement>,
   columnType: ColumnType,
-  originalAssetAllocation: AssetAllocationModel
-): AssetAllocationModel {
+  originalAssetAllocation: AssetAllocationResource
+): AssetAllocationResource {
   const newValue: string = event.target.value;
 
-  const assetAllocation: AssetAllocationModel = {
+  const assetAllocation: AssetAllocationResource = {
     value: undefined,
     valueDelta: undefined,
     ...originalAssetAllocation,
   };
+
+  console.log('### updateAssetAllocation');
+  console.log(assetAllocation);
 
   switch (columnType) {
     case ColumnType.SYMBOL:
@@ -130,9 +136,9 @@ function updateAssetAllocation(
     case ColumnType.VALUE:
       break;
     case ColumnType.CURRENT_WEIGHT:
-      assetAllocation.currentWeight = parseFloat(newValue);
       break;
     case ColumnType.TARGET_WEIGHT:
+      assetAllocation.targetWeight = parseFloat(newValue);
       break;
     case ColumnType.SHARE_DELTA:
       break;
@@ -142,6 +148,7 @@ function updateAssetAllocation(
       break;
   }
 
+  console.log(assetAllocation);
   return assetAllocation;
 }
 
