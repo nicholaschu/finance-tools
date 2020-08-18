@@ -60,9 +60,17 @@ function AssetAllocationRow({
           }
         />
       </td>
-      <td>{assetAllocation.price}</td>
-      <td>{assetAllocation.value}</td>
-      <td>{assetAllocation.currentWeight}</td>
+      <td>
+        <AssetAllocationPrice price={assetAllocation.price} />
+      </td>
+      <td>
+        <AssetAllocationValue value={assetAllocation.value} />
+      </td>
+      <td>
+        <AssetAllocationCurrentWeight
+          currentWeight={assetAllocation.currentWeight}
+        />
+      </td>
       <td>
         <input
           type="number"
@@ -78,8 +86,12 @@ function AssetAllocationRow({
           }
         />
       </td>
-      <td>{assetAllocation.shareDelta}</td>
-      <td>{assetAllocation.valueDelta}</td>
+      <td>
+        <AssetAllocationShareDelta shareDelta={assetAllocation.shareDelta} />
+      </td>
+      <td>
+        <AssetAllocationValueDelta valueDelta={assetAllocation.valueDelta} />
+      </td>
       <td>
         <Button variant="danger" onClick={() => onRemoveRowClicked(index)}>
           Remove
@@ -87,6 +99,83 @@ function AssetAllocationRow({
       </td>
     </tr>
   );
+}
+
+function AssetAllocationPrice({ price }: { price?: number }): JSX.Element {
+  let formattedString: string = '0';
+
+  if (price !== undefined) {
+    formattedString = price.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  return <span>${formattedString}</span>;
+}
+
+function AssetAllocationValue({ value }: { value?: number }): JSX.Element {
+  let formattedString: string = '0';
+
+  if (value !== undefined) {
+    formattedString = value.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  return <span>${formattedString}</span>;
+}
+
+function AssetAllocationCurrentWeight({
+  currentWeight,
+}: {
+  currentWeight?: number;
+}): JSX.Element {
+  let formattedString: string = '0';
+
+  if (currentWeight !== undefined) {
+    formattedString = currentWeight.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  return <span>{formattedString}%</span>;
+}
+
+function AssetAllocationShareDelta({
+  shareDelta,
+}: {
+  shareDelta?: number;
+}): JSX.Element {
+  let formattedString: string = '0';
+
+  if (shareDelta !== undefined) {
+    formattedString = shareDelta.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  return <span>{formattedString}</span>;
+}
+
+function AssetAllocationValueDelta({
+  valueDelta,
+}: {
+  valueDelta?: number;
+}): JSX.Element {
+  let formattedString: string = '0';
+
+  if (valueDelta !== undefined) {
+    formattedString = valueDelta.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  return <span>${formattedString}</span>;
 }
 
 function handleModifyInput(

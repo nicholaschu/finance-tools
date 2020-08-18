@@ -28,7 +28,8 @@ export class AssetAllocationService {
           } else {
             return NaN;
           }
-        }
+        },
+        0
       );
 
       if (totalWeight === 100) {
