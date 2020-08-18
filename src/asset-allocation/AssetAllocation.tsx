@@ -22,9 +22,6 @@ class AssetAllocation extends React.Component {
   }
 
   handleModifyTable(assetModels: AssetAllocationModel[]): void {
-    console.log('### handleModifyTable');
-    console.log(assetModels);
-
     this.setState({ assetModels });
   }
 

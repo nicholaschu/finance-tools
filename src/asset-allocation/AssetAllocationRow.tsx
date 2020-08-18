@@ -1,3 +1,5 @@
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { AssetAllocationResource } from './asset-allocation.resource';
@@ -31,33 +33,17 @@ function AssetAllocationRow({
   return (
     <tr>
       <td>
-        <input
-          type="text"
-          defaultValue={assetAllocation.symbol}
-          onBlur={(event: React.ChangeEvent<HTMLInputElement>) =>
-            handleModifyInput(
-              event,
-              ColumnType.SYMBOL,
-              assetAllocation,
-              index,
-              onChange
-            )
-          }
+        <AssetAllocationSymbol
+          assetAllocation={assetAllocation}
+          index={index}
+          onChange={onChange}
         />
       </td>
       <td>
-        <input
-          type="number"
-          defaultValue={assetAllocation.shares}
-          onBlur={(event: React.ChangeEvent<HTMLInputElement>) =>
-            handleModifyInput(
-              event,
-              ColumnType.SHARES,
-              assetAllocation,
-              index,
-              onChange
-            )
-          }
+        <AssetAllocationShares
+          assetAllocation={assetAllocation}
+          index={index}
+          onChange={onChange}
         />
       </td>
       <td>
@@ -72,18 +58,10 @@ function AssetAllocationRow({
         />
       </td>
       <td>
-        <input
-          type="number"
-          defaultValue={assetAllocation.targetWeight}
-          onBlur={(event: React.ChangeEvent<HTMLInputElement>) =>
-            handleModifyInput(
-              event,
-              ColumnType.TARGET_WEIGHT,
-              assetAllocation,
-              index,
-              onChange
-            )
-          }
+        <AssetAllocationTargetWeight
+          assetAllocation={assetAllocation}
+          index={index}
+          onChange={onChange}
         />
       </td>
       <td>
@@ -98,6 +76,64 @@ function AssetAllocationRow({
         </Button>
       </td>
     </tr>
+  );
+}
+
+function AssetAllocationSymbol({
+  assetAllocation,
+  index,
+  onChange,
+}: {
+  assetAllocation: AssetAllocationResource;
+  index: number;
+  onChange: (
+    updatedAssetAllocation: AssetAllocationResource,
+    index: number
+  ) => void;
+}): JSX.Element {
+  return (
+    <Input
+      type="text"
+      defaultValue={assetAllocation.symbol || ''}
+      onBlur={(event: React.FocusEvent<HTMLInputElement>) =>
+        handleModifyInput(
+          event,
+          ColumnType.SYMBOL,
+          assetAllocation,
+          index,
+          onChange
+        )
+      }
+    />
+  );
+}
+
+function AssetAllocationShares({
+  assetAllocation,
+  index,
+  onChange,
+}: {
+  assetAllocation: AssetAllocationResource;
+  index: number;
+  onChange: (
+    updatedAssetAllocation: AssetAllocationResource,
+    index: number
+  ) => void;
+}): JSX.Element {
+  return (
+    <Input
+      type="number"
+      defaultValue={assetAllocation.shares || ''}
+      onBlur={(event: React.FocusEvent<HTMLInputElement>) =>
+        handleModifyInput(
+          event,
+          ColumnType.SHARES,
+          assetAllocation,
+          index,
+          onChange
+        )
+      }
+    />
   );
 }
 
@@ -142,6 +178,36 @@ function AssetAllocationCurrentWeight({
   }
 
   return <span>{formattedString}%</span>;
+}
+
+function AssetAllocationTargetWeight({
+  assetAllocation,
+  index,
+  onChange,
+}: {
+  assetAllocation: AssetAllocationResource;
+  index: number;
+  onChange: (
+    updatedAssetAllocation: AssetAllocationResource,
+    index: number
+  ) => void;
+}): JSX.Element {
+  return (
+    <Input
+      type="number"
+      defaultValue={assetAllocation.targetWeight || ''}
+      endAdornment={<InputAdornment position="end">%</InputAdornment>}
+      onBlur={(event: React.FocusEvent<HTMLInputElement>) =>
+        handleModifyInput(
+          event,
+          ColumnType.TARGET_WEIGHT,
+          assetAllocation,
+          index,
+          onChange
+        )
+      }
+    />
+  );
 }
 
 function AssetAllocationShareDelta({
@@ -210,9 +276,6 @@ function updateAssetAllocation(
     ...originalAssetAllocation,
   };
 
-  console.log('### updateAssetAllocation');
-  console.log(assetAllocation);
-
   switch (columnType) {
     case ColumnType.SYMBOL:
       assetAllocation.symbol = newValue;
@@ -237,7 +300,6 @@ function updateAssetAllocation(
       break;
   }
 
-  console.log(assetAllocation);
   return assetAllocation;
 }
 

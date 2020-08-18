@@ -1,6 +1,8 @@
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
@@ -72,8 +74,6 @@ function AssetAllocationTable({
         } else {
           setAssetResources(assetAllocations);
         }
-
-        console.log(assetAllocations);
       })
       .catch((err: any) => {
         console.error(err);
@@ -111,23 +111,26 @@ function AssetAllocationTable({
 
   return (
     <div>
-      <label>Contribution Amount:</label>
-      <input
+      <TextField
         type="number"
-        onBlur={(event: React.ChangeEvent<HTMLInputElement>) =>
+        variant="outlined"
+        label="Contribution Amount"
+        InputProps={{
+          startAdornment: <InputAdornment position="start">$</InputAdornment>,
+        }}
+        onBlur={(event: React.FocusEvent<HTMLInputElement>) =>
           setContribution(parseFloat(event.target.value))
         }
       />
-
-      <FormGroup row>
+      <FormGroup>
         <FormControlLabel
           control={
             <Switch checked={roundDeltas} onChange={handleRoundDeltasSwitch} />
           }
-          label="Round"
+          label="Round Deltas"
         />
       </FormGroup>
-
+      <br />
       <Table striped bordered>
         <thead>
           <tr>
@@ -171,12 +174,7 @@ function updateAssetAllocations(
   originalAssetAllocations: AssetAllocationModel[]
 ): AssetAllocationModel[] {
   const assetAllocations: AssetAllocationModel[] = originalAssetAllocations.slice();
-
   assetAllocations[index] = updatedAssetAllocation;
-
-  console.log('### updateAssetAllocations');
-  console.log(originalAssetAllocations);
-  console.log(assetAllocations);
 
   return assetAllocations;
 }
