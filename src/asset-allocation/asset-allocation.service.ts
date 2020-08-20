@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { AssetAllocationResource } from './asset-allocation.resource';
 
 export class AssetAllocationService {
-  calculateAssetAllocations(
+  async calculateAssetAllocations(
     symbolList: (string | undefined)[],
     sharesList: (number | undefined)[],
     targetWeights?: (number | undefined)[],
@@ -42,21 +42,19 @@ export class AssetAllocationService {
       }
     }
 
-    return axios
-      .get(assetAllocationEndpoint, {
-        params,
-      })
-      .then((res: AxiosResponse) => {
-        return res.data.map((asset: AssetAllocationResource) => {
-          return new AssetAllocationResource(
-            asset.symbol,
-            asset.shares,
-            asset.price,
-            asset.currentWeight,
-            asset.targetWeight,
-            asset.shareDelta
-          );
-        });
-      });
+    const res: AxiosResponse = await axios.get(assetAllocationEndpoint, {
+      params,
+    });
+
+    return res.data.map((asset: AssetAllocationResource) => {
+      return new AssetAllocationResource(
+        asset.symbol,
+        asset.shares,
+        asset.price,
+        asset.currentWeight,
+        asset.targetWeight,
+        asset.shareDelta
+      );
+    });
   }
 }

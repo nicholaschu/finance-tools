@@ -278,7 +278,7 @@ function updateAssetAllocation(
 
   switch (columnType) {
     case ColumnType.SYMBOL:
-      assetAllocation.symbol = newValue;
+      assetAllocation.symbol = newValue.toUpperCase();
       break;
     case ColumnType.SHARES:
       assetAllocation.shares = parseFloat(newValue);

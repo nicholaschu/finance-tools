@@ -2,9 +2,11 @@ export class AssetAllocationResource {
   symbol?: string;
   shares?: number;
   price?: number;
+  value?: number;
   currentWeight?: number;
   targetWeight?: number;
   shareDelta?: number;
+  valueDelta?: number;
 
   constructor(
     symbol?: string,
@@ -20,21 +22,13 @@ export class AssetAllocationResource {
     this.currentWeight = currentWeight;
     this.targetWeight = targetWeight;
     this.shareDelta = shareDelta;
-  }
 
-  get value(): number | undefined {
     if (this.shares !== undefined && this.price !== undefined) {
-      return parseFloat((this.shares * this.price).toFixed(2));
-    } else {
-      return undefined;
+      this.value = parseFloat((this.shares * this.price).toFixed(2));
     }
-  }
 
-  get valueDelta(): number | undefined {
     if (this.shareDelta !== undefined && this.price !== undefined) {
-      return parseFloat((this.shareDelta * this.price).toFixed(2));
-    } else {
-      return undefined;
+      this.valueDelta = parseFloat((this.shareDelta * this.price).toFixed(2));
     }
   }
 }
