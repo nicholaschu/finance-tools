@@ -1,5 +1,6 @@
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import { roundNumber } from '../utilities/helper';
 import { AssetAllocationResource } from './asset-allocation.resource';
@@ -66,7 +67,13 @@ function AssetAllocationTable({
           <AssetAllocationAggregateRow assetAllocations={assetAllocations} />
         </tbody>
       </Table>
-      <Button onClick={onAddRowClick} disabled={disableAddRowButton}>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<AddIcon />}
+        onClick={onAddRowClick}
+        disabled={disableAddRowButton}
+      >
         Add Row
       </Button>
     </div>

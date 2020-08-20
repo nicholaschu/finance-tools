@@ -1,7 +1,8 @@
+import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import DeleteIcon from '@material-ui/icons/Delete';
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import { roundNumber } from '../utilities/helper';
 import { AssetAllocationResource } from './asset-allocation.resource';
 import './AssetAllocationRow.css';
@@ -74,9 +75,9 @@ function AssetAllocationRow({
         />
       </td>
       <td>
-        <Button variant="danger" onClick={() => onRemoveRowClicked(index)}>
-          Remove
-        </Button>
+        <IconButton onClick={() => onRemoveRowClicked(index)}>
+          <DeleteIcon />
+        </IconButton>
       </td>
     </tr>
   );
