@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import { roundNumber } from '../utilities/helper';
 import { AssetAllocationResource } from './asset-allocation.resource';
 import AssetAllocationRow from './AssetAllocationRow';
 import './AssetAllocationTable.css';
@@ -56,15 +57,80 @@ function AssetAllocationTable({
             <th>Current Weight</th>
             <th>Target Weight</th>
             <th>Share Delta</th>
-            <th>Value Delta</th>
+            <th>Contribution</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>
+          {rows}
+          <AssetAllocationBlankRow />
+          <AssetAllocationAggregateRow assetAllocations={assetAllocations} />
+        </tbody>
       </Table>
       <Button onClick={onAddRowClick} disabled={disableAddRowButton}>
         Add Row
       </Button>
     </div>
+  );
+}
+
+function AssetAllocationBlankRow(): JSX.Element {
+  return (
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  );
+}
+
+function AssetAllocationAggregateRow({
+  assetAllocations,
+}: {
+  assetAllocations: AssetAllocationResource[];
+}): JSX.Element {
+  let totalValue = 0;
+  let totalCurrentWeight = 0;
+  let totalTargetWeight = 0;
+  let totalContribution = 0;
+
+  assetAllocations.forEach((asset: AssetAllocationResource) => {
+    if (asset.value !== undefined) {
+      totalValue += asset.value;
+    }
+
+    if (asset.currentWeight !== undefined) {
+      totalCurrentWeight += asset.currentWeight;
+    }
+
+    if (asset.targetWeight !== undefined) {
+      totalTargetWeight += asset.targetWeight;
+    }
+
+    if (asset.contribution !== undefined) {
+      totalContribution += asset.contribution;
+    }
+  });
+
+  return (
+    <tr>
+      <td>
+        <b>Aggregate Values:</b>
+      </td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>${roundNumber(totalValue)}</td>
+      <td>{roundNumber(totalCurrentWeight)}%</td>
+      <td>{roundNumber(totalTargetWeight)}%</td>
+      <td>&nbsp;</td>
+      <td>${roundNumber(totalContribution)}</td>
+      <td>&nbsp;</td>
+    </tr>
   );
 }
 

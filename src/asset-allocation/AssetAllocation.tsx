@@ -76,7 +76,7 @@ function AssetAllocation(): JSX.Element {
               ) {
                 assets.shareDelta = parseFloat(assets.shareDelta.toFixed(0));
 
-                assets.valueDelta = parseFloat(
+                assets.contribution = parseFloat(
                   (assets.shareDelta * assets.price).toFixed(0)
                 );
               }
@@ -109,8 +109,8 @@ function AssetAllocation(): JSX.Element {
     const chartData: [any, any][] = [['Symbol', 'Value']];
 
     assetResources.forEach((asset: AssetAllocationResource) => {
-      if (asset.value !== undefined && asset.valueDelta !== undefined) {
-        chartData.push([asset.symbol, asset.value + asset.valueDelta]);
+      if (asset.value !== undefined && asset.contribution !== undefined) {
+        chartData.push([asset.symbol, asset.value + asset.contribution]);
       } else {
         chartData.push([asset.symbol, undefined]);
       }

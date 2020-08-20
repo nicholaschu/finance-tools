@@ -2,6 +2,7 @@ import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import { roundNumber } from '../utilities/helper';
 import { AssetAllocationResource } from './asset-allocation.resource';
 import './AssetAllocationRow.css';
 
@@ -68,7 +69,9 @@ function AssetAllocationRow({
         <AssetAllocationShareDelta shareDelta={assetAllocation.shareDelta} />
       </td>
       <td>
-        <AssetAllocationValueDelta valueDelta={assetAllocation.valueDelta} />
+        <AssetAllocationContribution
+          contribution={assetAllocation.contribution}
+        />
       </td>
       <td>
         <Button variant="danger" onClick={() => onRemoveRowClicked(index)}>
@@ -137,47 +140,20 @@ function AssetAllocationShares({
   );
 }
 
-function AssetAllocationPrice({ price }: { price?: number }): JSX.Element {
-  let formattedString: string = '0';
-
-  if (price !== undefined) {
-    formattedString = price.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
-  return <span>${formattedString}</span>;
+function AssetAllocationPrice({ price = 0 }: { price?: number }): JSX.Element {
+  return <span>${roundNumber(price)}</span>;
 }
 
-function AssetAllocationValue({ value }: { value?: number }): JSX.Element {
-  let formattedString: string = '0';
-
-  if (value !== undefined) {
-    formattedString = value.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
-  return <span>${formattedString}</span>;
+function AssetAllocationValue({ value = 0 }: { value?: number }): JSX.Element {
+  return <span>${roundNumber(value)}</span>;
 }
 
 function AssetAllocationCurrentWeight({
-  currentWeight,
+  currentWeight = 0,
 }: {
   currentWeight?: number;
 }): JSX.Element {
-  let formattedString: string = '0';
-
-  if (currentWeight !== undefined) {
-    formattedString = currentWeight.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
-  return <span>{formattedString}%</span>;
+  return <span>{roundNumber(currentWeight)}%</span>;
 }
 
 function AssetAllocationTargetWeight({
@@ -211,37 +187,19 @@ function AssetAllocationTargetWeight({
 }
 
 function AssetAllocationShareDelta({
-  shareDelta,
+  shareDelta = 0,
 }: {
   shareDelta?: number;
 }): JSX.Element {
-  let formattedString: string = '0';
-
-  if (shareDelta !== undefined) {
-    formattedString = shareDelta.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
-  return <span>{formattedString}</span>;
+  return <span>{roundNumber(shareDelta)}</span>;
 }
 
-function AssetAllocationValueDelta({
-  valueDelta,
+function AssetAllocationContribution({
+  contribution = 0,
 }: {
-  valueDelta?: number;
+  contribution?: number;
 }): JSX.Element {
-  let formattedString: string = '0';
-
-  if (valueDelta !== undefined) {
-    formattedString = valueDelta.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
-  return <span>${formattedString}</span>;
+  return <span>${roundNumber(contribution)}</span>;
 }
 
 function handleModifyInput(
@@ -272,7 +230,7 @@ function updateAssetAllocation(
 
   const assetAllocation: AssetAllocationResource = {
     value: undefined,
-    valueDelta: undefined,
+    contribution: undefined,
     ...originalAssetAllocation,
   };
 
